@@ -1,11 +1,15 @@
 const express = require('express');
 const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
 
 // Initialize the Express app and middleware
 const app = express();
 app.use(express.json()); // for parsing application/json
 app.use(cors()); // enable CORS
+
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Set up SQLite database
 const db = new sqlite3.Database(':memory:'); // In-memory database for demo purposes
