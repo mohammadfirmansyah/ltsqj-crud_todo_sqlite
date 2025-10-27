@@ -64,7 +64,7 @@ ltsqj-crud_todo_sqlite/
 ├── public/             # Static web interface
 │   └── index.html      # Web UI for todo management
 ├── README.md           # This file
-├── LICENSE             # MIT License
+├── LICENSE             # Apache License 2.0
 ├── CONTRIBUTING.md     # Contribution guidelines
 └── CHANGELOG.md        # Version history
 ```
