@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.0] - 2025-10-27
 
+**GitHub Release:** [v1.1.0](https://github.com/mohammadfirmansyah/ltsqj-crud_todo_sqlite/releases/tag/v1.1.0)
+
 ### Added
 - Modern web UI interface in `public/index.html`
 - Static file serving with Express
