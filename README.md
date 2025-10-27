@@ -3,7 +3,7 @@
 [![GitHub](https://img.shields.io/badge/GitHub-ltsqj--crud__todo__sqlite-blue?logo=github)](https://github.com/mohammadfirmansyah/ltsqj-crud_todo_sqlite)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green?logo=node.js)](https://nodejs.org/)
 [![Express](https://img.shields.io/badge/Express-4.21.2-black?logo=express)](https://expressjs.com/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 A RESTful API backend for todo applications built with Node.js, Express, and SQLite. This microservice provides complete CRUD operations with a modern web interface for task management.
 
@@ -11,7 +11,7 @@ A RESTful API backend for todo applications built with Node.js, Express, and SQL
 
 - **[Contributing Guide](CONTRIBUTING.md)** - Learn how to contribute to this project
 - **[Changelog](CHANGELOG.md)** - Version history and release notes
-- **[License](LICENSE)** - MIT License details
+- **[License](LICENSE)** - Apache License 2.0 details
 
 ## ✨ Key Features
 
@@ -301,7 +301,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
 
 ## 👨‍💻 Developer
 
