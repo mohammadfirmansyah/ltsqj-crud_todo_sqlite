@@ -5,7 +5,7 @@
 [![Express](https://img.shields.io/badge/Express-4.21.2-black?logo=express)](https://expressjs.com/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
-A RESTful API backend for todo applications built with Node.js, Express, and SQLite. This microservice provides complete CRUD operations with a modern web interface for task management.
+A RESTful API backend for todo applications built with Node.js, Express, and SQLite. This microservice provides complete CRUD operations with **real-time synchronization** using WebSocket technology, ensuring all connected clients stay in sync automatically.
 
 ## 📚 Documentation
 
@@ -16,9 +16,11 @@ A RESTful API backend for todo applications built with Node.js, Express, and SQL
 ## ✨ Key Features
 
 - **RESTful API**: Complete CRUD operations following REST principles
+- **Real-time Sync**: WebSocket-powered live updates across all connected clients
 - **SQLite Database**: Lightweight in-memory database for quick setup
 - **Modern Web UI**: Beautiful responsive interface for managing todos
 - **CORS Enabled**: Ready for cross-origin requests from frontend apps
+- **Socket.IO Integration**: Bidirectional real-time communication
 - **Error Handling**: Comprehensive error responses with appropriate HTTP status codes
 - **Static File Serving**: Serves web interface from public directory
 - **Easy Integration**: Simple API endpoints for any frontend framework
@@ -47,6 +49,7 @@ A RESTful API backend for todo applications built with Node.js, Express, and SQL
 
 - **Node.js** - JavaScript runtime environment
 - **Express.js** - Fast, unopinionated web framework
+- **Socket.IO** - Real-time bidirectional event-based communication
 - **SQLite3** - Embedded SQL database engine
 - **CORS** - Cross-Origin Resource Sharing middleware
 - **HTML/CSS/JavaScript** - Modern web interface
@@ -105,7 +108,44 @@ Follow these steps to get your development environment running:
     
     The API is now ready to accept requests from your frontend applications.
 
-## 📝 API Documentation
+## � Real-time Synchronization
+
+This backend implements WebSocket-based real-time synchronization using Socket.IO. All CRUD operations automatically broadcast updates to connected clients.
+
+### How It Works
+
+1. **Server broadcasts** - Every CREATE, UPDATE, or DELETE operation triggers a broadcast to all connected clients
+2. **Clients listen** - Connected web UIs and mobile apps receive instant updates via WebSocket
+3. **Automatic sync** - No manual refresh needed - data stays consistent across all platforms
+
+### WebSocket Events
+
+**Server emits:**
+- `todos-updated` - Sends complete todo list after any CRUD operation
+
+**Clients receive:**
+```javascript
+socket.on('todos-updated', (todos) => {
+  // Update UI with new data automatically
+  updateTodoList(todos);
+});
+```
+
+### Benefits
+
+- ✅ **No polling** - Eliminates need for periodic API calls
+- ✅ **Instant updates** - Changes appear immediately on all devices
+- ✅ **Reduced load** - More efficient than constant HTTP requests
+- ✅ **Better UX** - Users see changes in real-time without manual refresh
+
+### Testing Real-time Sync
+
+1. Open web UI at `http://localhost:3000` in multiple browser windows
+2. Add, update, or delete a todo in one window
+3. Watch the changes appear instantly in all other windows
+4. Test with mobile app running simultaneously - all stay in sync!
+
+## �📝 API Documentation
 
 ### Base URL
 ```
