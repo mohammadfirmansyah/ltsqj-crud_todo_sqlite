@@ -13,9 +13,15 @@ const server = http.createServer(app);
 // This enables real-time bidirectional communication between server and clients
 const io = new Server(server, {
   cors: {
-    origin: "*", // Allow all origins for development
-    methods: ["GET", "POST", "PUT", "DELETE"]
-  }
+    origin: "*", // Allow all origins for development and production
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+  },
+  // Production-ready configuration for IBM Code Engine and other cloud platforms
+  transports: ['polling', 'websocket'],
+  allowUpgrades: true,
+  pingTimeout: 60000,
+  pingInterval: 25000,
 });
 
 app.use(express.json()); // for parsing application/json
@@ -39,10 +45,19 @@ db.serialize(() => {
 // Socket.IO connection handling
 // Emits real-time updates to all connected clients when data changes
 io.on('connection', (socket) => {
-  console.log('Client connected:', socket.id);
+  console.log('✅ Client connected:', socket.id);
+  console.log('🚀 Transport:', socket.conn.transport.name);
   
-  socket.on('disconnect', () => {
-    console.log('Client disconnected:', socket.id);
+  socket.conn.on('upgrade', (transport) => {
+    console.log('⬆️ Transport upgraded to:', transport.name);
+  });
+  
+  socket.on('disconnect', (reason) => {
+    console.log('❌ Client disconnected:', socket.id, 'Reason:', reason);
+  });
+  
+  socket.on('error', (error) => {
+    console.log('⚠️ Socket error:', error.message);
   });
 });
 
@@ -50,7 +65,10 @@ io.on('connection', (socket) => {
 const broadcastTodos = () => {
   db.all('SELECT * FROM todo', [], (err, rows) => {
     if (!err) {
+      console.log('📡 Broadcasting todos update to all clients:', rows.length, 'items');
       io.emit('todos-updated', rows);
+    } else {
+      console.error('❌ Error fetching todos for broadcast:', err.message);
     }
   });
 };
