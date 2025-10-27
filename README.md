@@ -108,9 +108,52 @@ Follow these steps to get your development environment running:
     
     The API is now ready to accept requests from your frontend applications.
 
-## � Real-time Synchronization
+## 🔄 Real-time Synchronization
 
 This backend implements WebSocket-based real-time synchronization using Socket.IO. All CRUD operations automatically broadcast updates to connected clients.
+
+### Architecture Diagram
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                     Real-time Sync Flow                              │
+└──────────────────────────────────────────────────────────────────────┘
+
+┌─────────────┐                 ┌──────────────┐                ┌─────────────┐
+│   Client 1  │                 │   Backend    │                │   Client 2  │
+│  (Web UI)   │                 │  Socket.IO   │                │(Mobile App) │
+└──────┬──────┘                 └──────┬───────┘                └──────┬──────┘
+       │                               │                               │
+       │ 1. POST /todos                │                               │
+       │──────────────────────────────►│                               │
+       │    {title: "New Task"}        │                               │
+       │                               │                               │
+       │                          2. Save to DB                        │
+       │                               │                               │
+       │ 3. HTTP 201 Response          │                               │
+       │◄──────────────────────────────│                               │
+       │                               │                               │
+       │                          4. Broadcast via WebSocket           │
+       │                               │                               │
+       │ 5. Socket: 'todos-updated'    │  6. Socket: 'todos-updated'   │
+       │◄──────────────────────────────┼──────────────────────────────►│
+       │    [All Todos Array]          │      [All Todos Array]        │
+       │                               │                               │
+       │ 7. Update UI (No Refresh!)    │  8. Update UI (No Refresh!)   │
+       │    ✓ New task appears         │      ✓ New task appears       │
+       │                               │                               │
+
+
+WebSocket Connection Flow:
+─────────────────────────────
+Client → io.connect('http://localhost:3000')
+         │
+         ├──► socket.on('connect') → Connected!
+         │
+         ├──► socket.on('todos-updated') → Receive updates
+         │
+         └──► socket.on('disconnect') → Reconnect automatically
+```
 
 ### How It Works
 
