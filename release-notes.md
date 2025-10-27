@@ -11,8 +11,7 @@ A RESTful API backend for todo management with Socket.IO real-time synchronizati
 - **Broadcast System**: Automatic state synchronization after every CRUD operation
 - **CORS Enabled**: Ready for cross-origin requests from any frontend
 
-
-## �️ Technical Stack
+## 🛠️ Technical Stack
 
 - **Node.js** - Runtime environment
 - **Express.js** - v4.21.2
@@ -43,12 +42,12 @@ Access web UI at `http://localhost:3000`
 - ✅ Complete API documentation
 - ✅ Architecture diagrams
 
-Built with ❤️ using Node.js & Express
-Access the web UI at http://localhost:3000 after starting the server
-
 ## 🔗 Frontend Integration
-Works seamlessly with [myTodoApp](https://github.com/mohammadfirmansyah/myTodoApp) React Native frontend
+
+Works seamlessly with [myTodoApp](https://github.com/mohammadfirmansyah/myTodoApp) React Native frontend.
 
 **Note:** Uses in-memory database. Data will be lost on server restart.
+
+---
 
 Built with ❤️ using Node.js & Express
