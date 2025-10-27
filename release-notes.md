@@ -1,53 +1,49 @@
-# 🚀 Todo API Backend - Web UI & Enhanced Documentation
+# 🚀 Todo API Backend - Real-time Synchronization
 
-## ✨ New Features
-- 🎨 Modern web UI interface with gradient design
-- Real-time statistics (total and completed tasks)
-- Interactive task management through browser
-- Static file serving with Express
-- Responsive layout with smooth animations
+A RESTful API backend for todo management with Socket.IO real-time synchronization. Features complete CRUD operations, modern web UI, and bidirectional WebSocket communication for instant updates across all connected clients.
 
-## 🔧 Improvements
-- Enhanced README with complete API documentation
-- Added comprehensive documentation (CONTRIBUTING.md, CHANGELOG.md)
-- Updated .gitignore for Node.js files
-- Improved project structure
+## ✨ What's New
 
-## 📡 API Endpoints
-- `GET /todos` - Fetch all todos
-- `POST /todos` - Create a new todo
-- `GET /todos/:id` - Get specific todo by ID
-- `PUT /todos/:id` - Update todo by ID
-- `DELETE /todos/:id` - Delete todo by ID
+- **Real-time Sync**: Socket.IO integration for instant updates across all clients
+- **WebSocket Communication**: Bidirectional event-based updates using `todos-updated` events
+- **RESTful API**: Full CRUD operations (GET, POST, PUT, DELETE)
+- **Modern Web UI**: Gradient design with live real-time updates
+- **Broadcast System**: Automatic state synchronization after every CRUD operation
+- **CORS Enabled**: Ready for cross-origin requests from any frontend
 
-## 🛠️ Technical Stack
-- Node.js with Express.js
-- SQLite3 in-memory database
-- CORS enabled
-- Modern HTML/CSS/JavaScript web interface
+
+## �️ Technical Stack
+
+- **Node.js** - Runtime environment
+- **Express.js** - v4.21.2
+- **SQLite3** - v5.1.7
+- **CORS** - v2.8.5
+- **Socket.IO** - Real-time WebSocket communication
 
 ## 📚 Documentation
-- Complete API documentation with examples
-- Code highlights and explanations
-- Frontend integration examples (PowerShell, React Native)
-- Professional README and contributing guide
+
+- [README.md](README.md) - API endpoints and architecture diagrams
+- [CONTRIBUTING.md](CONTRIBUTING.md) - How to contribute
+- [CHANGELOG.md](CHANGELOG.md) - Version history
 
 ## 🚀 Quick Start
+
 ```bash
-git clone https://github.com/mohammadfirmansyah/ltsqj-crud_todo_sqlite.git
-cd ltsqj-crud_todo_sqlite
 npm install
 node index.js
 ```
 
-## 📦 What's Included
-- RESTful API backend
-- Modern web UI interface
-- Professional documentation
-- Frontend integration examples
-- CORS-enabled for cross-origin requests
+Access web UI at `http://localhost:3000`
 
-## 🌐 Web Interface
+## 📦 What's Included
+
+- ✅ 5 RESTful API endpoints
+- ✅ Socket.IO real-time synchronization
+- ✅ Modern web interface with live updates
+- ✅ Complete API documentation
+- ✅ Architecture diagrams
+
+Built with ❤️ using Node.js & Express
 Access the web UI at http://localhost:3000 after starting the server
 
 ## 🔗 Frontend Integration
