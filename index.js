@@ -2,9 +2,22 @@ const express = require('express');
 const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const http = require('http');
+const { Server } = require('socket.io');
 
 // Initialize the Express app and middleware
 const app = express();
+const server = http.createServer(app);
+
+// Initialize Socket.IO with CORS configuration
+// This enables real-time bidirectional communication between server and clients
+const io = new Server(server, {
+  cors: {
+    origin: "*", // Allow all origins for development
+    methods: ["GET", "POST", "PUT", "DELETE"]
+  }
+});
+
 app.use(express.json()); // for parsing application/json
 app.use(cors()); // enable CORS
 
@@ -23,6 +36,25 @@ db.serialize(() => {
   )`);
 });
 
+// Socket.IO connection handling
+// Emits real-time updates to all connected clients when data changes
+io.on('connection', (socket) => {
+  console.log('Client connected:', socket.id);
+  
+  socket.on('disconnect', () => {
+    console.log('Client disconnected:', socket.id);
+  });
+});
+
+// Helper function to broadcast todo updates to all connected clients
+const broadcastTodos = () => {
+  db.all('SELECT * FROM todo', [], (err, rows) => {
+    if (!err) {
+      io.emit('todos-updated', rows);
+    }
+  });
+};
+
 // API Endpoints
 
 // Create a new to-do item
@@ -32,7 +64,10 @@ app.post('/todos', (req, res) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
-    res.status(201).json({ id: this.lastID, title, completed: 0 });
+    const newTodo = { id: this.lastID, title, completed: 0 };
+    res.status(201).json(newTodo);
+    // Broadcast update to all connected clients in real-time
+    broadcastTodos();
   });
 });
 
@@ -75,6 +110,8 @@ app.put('/todos/:id', (req, res) => {
         return res.status(404).json({ error: 'To-do item not found' });
       }
       res.json({ id, title, completed });
+      // Broadcast update to all connected clients in real-time
+      broadcastTodos();
     }
   );
 });
@@ -90,11 +127,14 @@ app.delete('/todos/:id', (req, res) => {
       return res.status(404).json({ error: 'To-do item not found' });
     }
     res.status(204).end();
+    // Broadcast update to all connected clients in real-time
+    broadcastTodos();
   });
 });
 
 // Start the server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
+  console.log('WebSocket server is ready for real-time updates');
 });

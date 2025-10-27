@@ -195,7 +195,28 @@
         </div>
     </div>
 
+    <!-- Socket.IO Client Library -->
+    <script src="/socket.io/socket.io.js"></script>
+    
     <script>
+        // Initialize Socket.IO connection for real-time updates
+        // This creates a persistent WebSocket connection to the server
+        const socket = io('http://localhost:3000');
+        
+        // Listen for real-time todo updates from server
+        // This fires whenever any client performs CRUD operations
+        socket.on('todos-updated', (todos) => {
+            displayTodos(todos);
+        });
+
+        socket.on('connect', () => {
+            console.log('✅ Connected to real-time server');
+        });
+
+        socket.on('disconnect', () => {
+            console.log('❌ Disconnected from real-time server');
+        });
+
         // Load todos on page load
         window.addEventListener('DOMContentLoaded', loadTodos);
 
@@ -204,36 +225,41 @@
             if (e.key === 'Enter') addTodo();
         });
 
+        // Helper function to display todos in the UI
+        // Separated from loadTodos to reuse for real-time updates
+        function displayTodos(todos) {
+            const todoList = document.getElementById('todoList');
+            
+            if (todos.length === 0) {
+                todoList.innerHTML = `
+                    <div class="empty-state">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                        <p>No tasks yet. Add one above!</p>
+                    </div>
+                `;
+            } else {
+                todoList.innerHTML = todos.map(todo => `
+                    <div class="todo-item ${todo.completed ? 'completed' : ''}">
+                        <input type="checkbox" class="checkbox" 
+                               ${todo.completed ? 'checked' : ''} 
+                               onchange="toggleTodo(${todo.id}, ${todo.completed})">
+                        <span class="todo-text">${todo.title}</span>
+                        <button class="delete-btn" onclick="deleteTodo(${todo.id})">Delete</button>
+                    </div>
+                `).join('');
+            }
+            
+            updateStats(todos);
+        }
+
         // Fetch and display all todos from the API
         async function loadTodos() {
             try {
                 const response = await fetch('http://localhost:3000/todos');
                 const todos = await response.json();
-                
-                const todoList = document.getElementById('todoList');
-                
-                if (todos.length === 0) {
-                    todoList.innerHTML = `
-                        <div class="empty-state">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                            </svg>
-                            <p>No tasks yet. Add one above!</p>
-                        </div>
-                    `;
-                } else {
-                    todoList.innerHTML = todos.map(todo => `
-                        <div class="todo-item ${todo.completed ? 'completed' : ''}">
-                            <input type="checkbox" class="checkbox" 
-                                   ${todo.completed ? 'checked' : ''} 
-                                   onchange="toggleTodo(${todo.id}, ${todo.completed})">
-                            <span class="todo-text">${todo.title}</span>
-                            <button class="delete-btn" onclick="deleteTodo(${todo.id})">Delete</button>
-                        </div>
-                    `).join('');
-                }
-                
-                updateStats(todos);
+                displayTodos(todos);
             } catch (error) {
                 console.error('Error loading todos:', error);
                 document.getElementById('todoList').innerHTML = `
@@ -245,6 +271,7 @@
         }
 
         // Add a new todo
+        // No longer calls loadTodos() - real-time update via Socket.IO
         async function addTodo() {
             const input = document.getElementById('todoInput');
             const title = input.value.trim();
@@ -265,7 +292,7 @@
                 
                 if (response.ok) {
                     input.value = '';
-                    loadTodos();
+                    // Real-time update handled by Socket.IO listener
                 }
             } catch (error) {
                 console.error('Error adding todo:', error);
@@ -274,6 +301,7 @@
         }
 
         // Toggle todo completion status
+        // No longer calls loadTodos() - real-time update via Socket.IO
         async function toggleTodo(id, currentStatus) {
             try {
                 const response = await fetch(`http://localhost:3000/todos/${id}`);
@@ -290,13 +318,14 @@
                     })
                 });
                 
-                loadTodos();
+                // Real-time update handled by Socket.IO listener
             } catch (error) {
                 console.error('Error toggling todo:', error);
             }
         }
 
         // Delete a todo
+        // No longer calls loadTodos() - real-time update via Socket.IO
         async function deleteTodo(id) {
             if (!confirm('Are you sure you want to delete this task?')) {
                 return;
@@ -306,7 +335,7 @@
                 await fetch(`http://localhost:3000/todos/${id}`, {
                     method: 'DELETE'
                 });
-                loadTodos();
+                // Real-time update handled by Socket.IO listener
             } catch (error) {
                 console.error('Error deleting todo:', error);
             }
