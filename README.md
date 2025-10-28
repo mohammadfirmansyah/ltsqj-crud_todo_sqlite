@@ -48,10 +48,10 @@ A RESTful API backend for todo applications built with Node.js, Express, and SQL
 ## 🛠️ Technologies Used
 
 - **Node.js** - JavaScript runtime environment
-- **Express.js** - Fast, unopinionated web framework
-- **Socket.IO** - Real-time bidirectional event-based communication
-- **SQLite3** - Embedded SQL database engine
-- **CORS** - Cross-Origin Resource Sharing middleware
+- **Express.js** - v4.21.1 - Fast, unopinionated web framework
+- **Socket.IO** - v4.8.1 - Real-time bidirectional event-based communication
+- **SQLite3** - v5.1.7 - Embedded SQL database engine
+- **CORS** - v2.8.5 - Cross-Origin Resource Sharing middleware
 - **HTML/CSS/JavaScript** - Modern web interface
 
 ## 📂 Project Structure
