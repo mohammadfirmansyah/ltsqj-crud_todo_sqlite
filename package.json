@@ -1,6 +1,6 @@
 {
   "name": "ltsqj-crud_todo_sqlite",
-  "version": "1.0.0",
+  "version": "1.3.0",
   "description": "RESTful API backend for todo management with Socket.IO real-time synchronization, SQLite database, and modern web UI",
   "main": "index.js",
   "scripts": {
